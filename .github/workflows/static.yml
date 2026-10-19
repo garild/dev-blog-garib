@@ -3,7 +3,8 @@ name: Build and Deploy Statiq Blog
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -12,70 +13,201 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: github-pages
   cancel-in-progress: false
 
 jobs:
   build:
+    name: Build and Validate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # 1. Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Setup .NET
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
-      - name: Find Statiq project
-        id: project
-        shell: bash
-        run: |
-          mapfile -t projects < <(
-            find src -name '*.csproj' -not -path '*/obj/*'
-          )
-
-          if [ "${#projects[@]}" -ne 1 ]; then
-            echo "Expected one project under src."
-            printf '%s\n' "${projects[@]}"
-            exit 1
-          fi
-
-          project_dir=$(dirname "${projects[0]}")
-          echo "dir=$project_dir" >> "$GITHUB_OUTPUT"
-
+      # 3. Restore dependencies
       - name: Restore dependencies
+        working-directory: src
         run: dotnet restore
-        working-directory: ${{ steps.project.outputs.dir }}
 
+      # 4. Generate Statiq website
       - name: Generate Statiq website
-        run: dotnet run -c Release --no-restore
-        working-directory: ${{ steps.project.outputs.dir }}
+        working-directory: src
+        run: dotnet run --configuration Release --no-restore
 
-      - name: Validate generated HTML
+      # 5. List all generated pages
+      - name: Discover generated pages
         shell: bash
         run: |
-          site_dir="${{ steps.project.outputs.dir }}/output"
+          echo "=================================="
+          echo " STATIQ GENERATED HTML PAGES"
+          echo "=================================="
 
-          if [ ! -f "$site_dir/index.html" ]; then
-            echo "ERROR: Missing $site_dir/index.html"
+          find src/output -type f -name "*.html" | sort
+
+          PAGE_COUNT=$(find src/output -type f -name "*.html" | wc -l)
+
+          echo ""
+          echo "Total HTML pages: $PAGE_COUNT"
+
+          if [ "$PAGE_COUNT" -lt 2 ]; then
+            echo "::error::Expected at least 2 HTML pages"
             exit 1
           fi
 
-          touch "$site_dir/.nojekyll"
-          echo "site_dir=$site_dir" >> "$GITHUB_OUTPUT"
-        id: site
+      # 6. Verify essential files
+      - name: Validate essential files
+        shell: bash
+        run: |
+          test -f src/output/index.html || {
+            echo "::error::Homepage missing"
+            exit 1
+          }
 
+          test -f src/output/blog/index.html || {
+            echo "::error::Blog index missing"
+            exit 1
+          }
+
+          test -f src/output/assets/css/site.css || {
+            echo "::error::Stylesheet missing"
+            exit 1
+          }
+
+          echo "Essential pages and CSS exist"
+
+      # 7. Validate articles and local links
+      - name: Validate articles and internal links
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit, unquote
+          import posixpath
+          import sys
+
+          site = Path("src/output").resolve()
+          sources = Path("src/input/posts")
+          prefix = "/dev-blog-garib"
+          errors = []
+
+          # Check each source article was generated
+          if sources.exists():
+              for article in sorted(sources.rglob("*.md")):
+                  slug = article.stem
+                  relative = article.relative_to(sources).with_suffix("")
+                  candidates = [
+                      site / "posts" / relative / "index.html",
+                      site / "posts" / (str(relative) + ".html"),
+                  ]
+
+                  if not any(p.is_file() for p in candidates):
+                      errors.append(
+                          f"Missing generated article: {article}"
+                      )
+
+          # Validate local href and src attributes
+          class LinkChecker(HTMLParser):
+              def __init__(self, page):
+                  super().__init__()
+                  self.page = page
+
+              def handle_starttag(self, tag, attrs):
+                  for key, value in attrs:
+                      if key not in ("href", "src") or not value:
+                          continue
+
+                      value = value.strip()
+                      url = urlsplit(value)
+
+                      # Ignore external links, fragments and schemes
+                      if url.scheme or url.netloc:
+                          continue
+                      if value.startswith(("#", "//")):
+                          continue
+
+                      path = unquote(url.path)
+                      if not path:
+                          continue
+
+                      if path.startswith("/"):
+                          if path == prefix:
+                              path = "/"
+                          elif path.startswith(prefix + "/"):
+                              path = path[len(prefix):]
+                          else:
+                              errors.append(
+                                  f"{self.page}: wrong root path: {value}"
+                              )
+                              continue
+
+                          relative_path = path.lstrip("/")
+                      else:
+                          page_dir = self.page.parent.relative_to(site)
+                          relative_path = posixpath.normpath(
+                              str(page_dir / path)
+                          )
+
+                      target = (site / relative_path).resolve()
+
+                      if not target.is_relative_to(site):
+                          errors.append(
+                              f"{self.page}: path escapes site: {value}"
+                          )
+                          continue
+
+                      candidates = [
+                          target,
+                          target / "index.html",
+                          Path(str(target) + ".html"),
+                      ]
+
+                      if not any(p.is_file() for p in candidates):
+                          errors.append(
+                              f"{self.page}: broken link: {value}"
+                          )
+
+          pages = sorted(site.rglob("*.html"))
+          for page in pages:
+              parser = LinkChecker(page)
+              parser.feed(page.read_text(
+                  encoding="utf-8", errors="replace"
+              ))
+
+          print(f"Checked {len(pages)} HTML pages")
+
+          if errors:
+              for error in errors:
+                  print(f"::error::{error}")
+              sys.exit(1)
+
+          print("All article and internal link checks passed")
+          PY
+
+      # 8. Prevent GitHub Jekyll processing
+      - name: Disable Jekyll
+        run: touch src/output/.nojekyll
+
+      # 9. Configure GitHub Pages
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload generated website
+      # 10. Upload generated static website
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: ${{ steps.site.outputs.site_dir }}
+          path: src/output
 
   deploy:
+    name: Deploy GitHub Pages
     runs-on: ubuntu-latest
     needs: build
 
@@ -84,6 +216,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy to GitHub Pages
+      # 11. Deploy only after validation
+      - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
