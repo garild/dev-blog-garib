@@ -4,7 +4,7 @@ Description: "How DI scope boundaries, captive dependencies, and incorrect lifet
 Category: ".NET / C#"
 ReadingTime: "6 min read"
 Date: 2026-10-19
-Layout: _PostLayout.cshtml
+Layout: /_PostLayout.cshtml
 ---
 
 ## Lifetime is a correctness decision

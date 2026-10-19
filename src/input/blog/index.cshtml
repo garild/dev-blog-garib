@@ -2,7 +2,7 @@
 Title: Articles
 Description: Browse practical .NET, architecture, security, and DevOps articles.
 ---
-@{ Layout = "_Layout.cshtml"; var root = (Context.Settings.GetString("SiteBasePath") ?? "").TrimEnd('/'); }
+@{ Layout = "/_Layout.cshtml"; var root = (Context.Settings.GetString("SiteBasePath") ?? "").TrimEnd('/'); }
 <section class="container page-heading"><span class="eyebrow"><span class="pulse-dot"></span> ENGINEERING NOTES</span><h1>Articles &amp; ideas<span class="accent-dot">.</span></h1><p class="lead">Production-minded guides on .NET, system design, infrastructure, and secure APIs. Less hype. More engineering.</p></section>
 <section class="container blog-area">
  <div class="search-row"><label class="search-field"><span aria-hidden="true">⌕</span><input id="post-search" type="search" placeholder="Search articles..." autocomplete="off" aria-label="Search articles" /></label><span id="result-count" class="result-count" aria-live="polite">4 articles</span></div>

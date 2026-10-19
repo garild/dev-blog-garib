@@ -4,7 +4,7 @@ Description: "How to make a database state change and a message publication reli
 Category: "ARCHITECTURE"
 ReadingTime: "7 min read"
 Date: 2026-10-17
-Layout: _PostLayout.cshtml
+Layout: /_PostLayout.cshtml
 ---
 
 ## The gap between the database and the broker

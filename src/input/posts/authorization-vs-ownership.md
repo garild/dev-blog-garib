@@ -4,7 +4,7 @@ Description: "A valid JWT and a permission check do not prove that the caller is
 Category: "SECURITY"
 ReadingTime: "5 min read"
 Date: 2026-10-18
-Layout: _PostLayout.cshtml
+Layout: /_PostLayout.cshtml
 ---
 
 ## The two green checks

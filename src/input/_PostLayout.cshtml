@@ -1,5 +1,5 @@
 @{
-    Layout = "_Layout.cshtml";
+    Layout = "/_Layout.cshtml";
     var root = (Context.Settings.GetString("SiteBasePath") ?? "").TrimEnd('/');
     var title = Document.GetString("Title") ?? "Article";
     var description = Document.GetString("Description") ?? "";

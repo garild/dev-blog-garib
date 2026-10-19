@@ -2,7 +2,7 @@
 Title: Projects
 Description: Architecture demos, educational sample systems, and practical .NET experiments.
 ---
-@{ Layout = "_Layout.cshtml"; var root = (Context.Settings.GetString("SiteBasePath") ?? "").TrimEnd('/'); }
+@{ Layout = "/_Layout.cshtml"; var root = (Context.Settings.GetString("SiteBasePath") ?? "").TrimEnd('/'); }
 <section class="container page-heading"><span class="eyebrow"><span class="pulse-dot"></span> BUILDING IN PUBLIC</span><h1>Projects &amp; experiments<span class="accent-dot">.</span></h1><p class="lead">Explorations in practical architecture. These are illustrative topics and demos—not claims of released products.</p></section>
 <section class="container project-grid section">
  <article class="project-card"><span class="project-number">01 / SYSTEM DESIGN</span><div class="project-visual">◈ → ◎ → ◈</div><h2>Reliable event processing</h2><p>An educational blueprint covering transactional outbox, idempotent inbox, retries and eventual consistency in .NET.</p><div class="project-tags"><span>.NET</span><span>PostgreSQL</span><span>Messaging</span></div><a class="text-link" href="@(root)/posts/outbox-pattern/">Read the architecture ↗</a></article>

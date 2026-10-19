@@ -4,7 +4,7 @@ Description: "Health checks should distinguish a process that must restart from 
 Category: "DEVOPS"
 ReadingTime: "5 min read"
 Date: 2026-10-16
-Layout: _PostLayout.cshtml
+Layout: /_PostLayout.cshtml
 ---
 
 ## Health is not one Boolean
