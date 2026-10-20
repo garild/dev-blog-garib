@@ -1,0 +1,134 @@
+
+@{
+    var siteTitle = Context.Settings.GetString(WebKeys.Title)
+        ?? "Garib Tigranyan";
+
+    var pageTitle = Document.GetString(WebKeys.Title);
+
+    var description = Document.GetString(WebKeys.Description)
+        ?? Context.Settings.GetString(WebKeys.Description)
+        ?? "Tech Lead and Senior .NET Developer";
+
+    var fullTitle = string.IsNullOrWhiteSpace(pageTitle)
+        ? siteTitle
+        : $"{pageTitle} | {siteTitle}";
+
+    // GitHub Pages project repository base path
+    const string basePath = "/dev-blog-garib";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>@fullTitle</title>
+
+    <meta name="description"
+          content="@description" />
+
+    <!-- Site CSS -->
+    <link rel="stylesheet"
+          href="@(basePath)/assets/css/site.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <div class="site-shell">
+
+        <!-- HEADER -->
+        <header class="site-header">
+            <div class="container header-inner">
+
+                <a class="brand" href="@(basePath)/">
+                    <span class="brand-dot"></span>
+                    <span>Garib Tigranyan</span>
+                </a>
+
+                <nav class="nav" aria-label="Main navigation">
+                    <a href="@(basePath)/">Home</a>
+
+                    <a href="@(basePath)/about">About</a>
+
+                    <a href="@(basePath)/posts/di-lifetimes">
+                        Blog
+                    </a>
+
+                    <a href="https://github.com/garild"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        GitHub
+                    </a>
+
+                    <a href="https://www.youtube.com/@@GaribTigranyan"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        YouTube
+                    </a>
+                </nav>
+
+            </div>
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <main id="main-content">
+            @RenderBody()
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="site-footer">
+            <div class="container footer-inner">
+
+                <div>
+                    <div class="footer-title">
+                        Garib Tigranyan
+                    </div>
+
+                    <div class="footer-subtitle">
+                        Tech Lead • Senior .NET Developer
+                        • Software Architect
+                    </div>
+                </div>
+
+                <div class="footer-links">
+
+                    <a href="https://github.com/garild"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        GitHub
+                    </a>
+
+                    <a href="https://www.linkedin.com/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        LinkedIn
+                    </a>
+
+                    <a href="https://www.youtube.com/@@GaribTigranyan"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        YouTube
+                    </a>
+
+                </div>
+
+            </div>
+        </footer>
+
+    </div>
+</body>
+</html>
