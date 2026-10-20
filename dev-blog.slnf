@@ -1,8 +1,0 @@
-{
-  "solution": {
-    "path": "src\\DevBlog.slnx",
-    "projects": [
-      "DevBlog.csproj"
-    ]
-  }
-}
