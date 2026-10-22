@@ -4,7 +4,6 @@ Description: "Learn the transactional Outbox and Inbox patterns with PostgreSQL,
 Category: "ARCHITECTURE"
 ReadingTime: "16 min read"
 Date: 2026-10-22
-Layout: /_PostLayout.cshtml
 Tags:
   - dotnet
   - csharp
@@ -14,6 +13,7 @@ Tags:
   - postgresql
   - distributed-systems
 Image: "/assets/images/outbox/transactional-outbox.png"
+Layout: /_PostLayout.cshtml
 ---
 
 *Your database committed the payment. Your event never reached the subscription service. Now what?*
@@ -28,7 +28,9 @@ A payment can succeed while the event that should activate a subscription disapp
 
 Imagine a subscription platform. A customer pays for Premium. The Payment Service saves `Paid`, then tries to publish a `PaymentCompleted` event. At precisely the wrong moment, the broker times out or the application crashes.
 
-![Without an Outbox, the payment commits but publishing can fail, leaving the subscription inactive.](/assets/images/outbox/failure-scenario.png)
+<div style="width:100%;max-width:760px;margin:1.5rem auto;">
+  <img src="/assets/images/outbox/failure-scenario.png" alt="Without an Outbox, the payment commits but publishing can fail, leaving the subscription inactive." loading="lazy" decoding="async" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;border-radius:12px;" />
+</div>
 
 *Figure 1. Two independent writes create a failure window: the database commit succeeds, but event publication fails.*
 
@@ -44,7 +46,9 @@ A common response is: “Just publish first.” That reverses the problem. If th
 
 In the Outbox approach, the service writes a `Payment` record and an `OutboxMessage` record **in the same local database transaction**. A separate publisher reads pending rows and sends the messages to a broker.
 
-![Payment Service commits Payments and OutboxMessages in PostgreSQL; worker later publishes to broker.](/assets/images/outbox/transactional-outbox.png)
+<div style="width:100%;max-width:760px;margin:1.5rem auto;">
+  <img src="/assets/images/outbox/transactional-outbox.png" alt="Payment Service commits Payments and OutboxMessages in PostgreSQL; worker later publishes to broker." loading="lazy" decoding="async" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;border-radius:12px;" />
+</div>
 
 *Figure 2. One atomic write to PostgreSQL, followed by asynchronous publication. The Outbox message remains durable during broker outages.*
 
@@ -420,7 +424,9 @@ The interactive workflow is intentionally opened on a separate page to avoid the
 
 What if the broker accepts an event, but the worker crashes before recording `PublishedAt`? The Outbox event is retried. That is expected. The consumer must be able to see **the same message ID twice** without activating the subscription twice.
 
-![Inbox pattern shows a duplicate PaymentCompleted event being skipped after the MessageId was recorded.](/assets/images/outbox/inbox-idempotency.png)
+<div style="width:100%;max-width:760px;margin:1.5rem auto;">
+  <img src="/assets/images/outbox/inbox-idempotency.png" alt="Inbox pattern shows a duplicate PaymentCompleted event being skipped after the MessageId was recorded." loading="lazy" decoding="async" style="display:block;width:100%;max-width:100%;height:auto;object-fit:contain;border-radius:12px;" />
+</div>
 
 *Figure 3. The consumer uses an Inbox record and a unique message ID to keep repeated deliveries from repeating business effects.*
 
