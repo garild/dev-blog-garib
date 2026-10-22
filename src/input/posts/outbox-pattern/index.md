@@ -15,8 +15,6 @@ Tags:
 Image: "/assets/images/outbox/transactional-outbox.png"
 ---
 
-# The Outbox Pattern in .NET: Reliable Events Without Distributed Transactions
-
 *Your database committed the payment. Your event never reached the subscription service. Now what?*
 
 A payment can succeed while the event that should activate a subscription disappears. The **Transactional Outbox** solves this dual-write problem by committing the business change and a pending event to **one database transaction**, then publishing asynchronously.
@@ -413,9 +411,9 @@ builder.Services.AddHostedService<OutboxPublisher>();
 
 The walkthrough below simulates a broker outage, a retry, and consumer idempotency. It runs as **static HTML + JavaScript** with no server or framework dependency.
 
-<iframe src="/assets/demos/outbox-workflow.html" title="Interactive transactional outbox walkthrough" loading="lazy" style="display:block;width:100%;height:470px;border:0;border-radius:16px" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>
+**[Launch the interactive Outbox workflow →](/assets/demos/outbox-workflow.html)**
 
-If your theme removes inline HTML or iframes, use the [standalone interactive Outbox walkthrough](/assets/demos/outbox-workflow.html) instead. Both are shipped in the accompanying assets.
+The interactive workflow is intentionally opened on a separate page to avoid theme CSS and HTML-rendering conflicts.
 
 ## 6. Inbox: why the subscription must be idempotent
 
