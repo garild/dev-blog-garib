@@ -4,6 +4,7 @@ Description: "Learn the transactional Outbox and Inbox patterns with PostgreSQL,
 Category: "ARCHITECTURE"
 ReadingTime: "16 min read"
 Date: 2026-10-22
+Layout: /_PostLayout.cshtml
 Tags:
   - dotnet
   - csharp
