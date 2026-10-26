@@ -1,1 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#0e2031"/><text x="32" y="40" text-anchor="middle" fill="#59e5e5" font-size="25" font-family="monospace" font-weight="bold">&lt;/&gt;</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="GT — DevTalks">
+  <defs><linearGradient id="violet" x1="0" y1="0" x2="1" y2="0.35"><stop stop-color="#8b5cf6"/><stop offset=".52" stop-color="#b76cff"/><stop offset="1" stop-color="#e879f9"/></linearGradient></defs>
+  <rect width="64" height="64" rx="14" fill="#0b121d"/>
+  <g transform="translate(8 10) scale(.273)" fill="url(#violet)"><path d="M60 0H176V24H64L32 51C21 61 18 75 23 89C29 105 41 112 57 112H60V90H85V136H58C28 136 6 119 1 94C-4 70 2 51 20 35L47 9Q53 3 60 0Z"/><path d="M58 36H156V60H124V146L96 162V60H58Z"/></g>
+</svg>

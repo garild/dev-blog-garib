@@ -1,5 +1,5 @@
 @{
-    var siteTitle = Context.Settings.GetString("Title") ?? "Garib Tigranyan";
+    var siteTitle = Context.Settings.GetString("Title") ?? "DevTalks by Garib Tigranyan";
     var title = Document.GetString("Title") ?? "Engineering Notes";
     var description = Document.GetString("Description") ?? Context.Settings.GetString("Description") ?? "Practical .NET and architecture writing.";
     var basePath = (Context.Settings.GetString("SiteBasePath") ?? "").TrimEnd('/');
@@ -16,13 +16,15 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="@fullTitle" />
   <meta property="og:description" content="@description" />
-  <meta property="og:site_name" content="Garib Tigranyan" />
+  <meta property="og:site_name" content="@siteTitle" />
   <title>@fullTitle</title>
-  <link rel="icon" type="image/svg+xml" href="@(basePath)/assets/favicon.svg" />
+  <link rel="icon" href="@(basePath)/assets/favicon.ico?v=violet" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/svg+xml" href="@(basePath)/assets/favicon.svg?v=violet" />
+  <link rel="apple-touch-icon" sizes="180x180" href="@(basePath)/assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="@(basePath)/assets/css/site.css" />
+  <link rel="stylesheet" href="@(basePath)/assets/css/site.css?v=violet" />
   <script src="@(basePath)/assets/js/site.js" defer></script>
 </head>
 <body>
@@ -30,7 +32,7 @@
   <div class="site-wrap">
     <header class="site-header">
       <div class="container header-content">
-        <a class="logo" href="@(basePath)/" aria-label="DevTalks home"><img src="@(basePath)/assets/devtalks-logo.svg" alt="DevTalks" width="180" height="40" /></a>
+        <a class="logo" href="@(basePath)/" aria-label="DevTalks by Garib Tigranyan home"><img src="@(basePath)/assets/devtalks-logo.svg?v=violet" alt="DevTalks by Garib Tigranyan" width="260" height="62" /></a>
         <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
         <nav id="primary-nav" class="nav" aria-label="Primary navigation">
           <a href="@(basePath)/">Home</a>
@@ -44,7 +46,7 @@
     <main id="main">@RenderBody()</main>
     <footer class="site-footer">
       <div class="container footer-top">
-        <div><a class="logo" href="@(basePath)/" aria-label="DevTalks home"><img src="@(basePath)/assets/devtalks-logo.svg" alt="DevTalks" width="180" height="40" /></a><p>Architecture, code, and the decisions behind reliable software.</p></div>
+        <div><a class="logo" href="@(basePath)/" aria-label="DevTalks by Garib Tigranyan home"><img src="@(basePath)/assets/devtalks-logo.svg?v=violet" alt="DevTalks by Garib Tigranyan" width="260" height="62" /></a><p>Architecture, code, and the decisions behind reliable software.</p></div>
         <div class="footer-navigation"><a href="@(basePath)/blog/">Articles</a><a href="@(basePath)/projects/">Projects</a><a href="@(basePath)/about/">About</a><a href="https://www.youtube.com/%40GaribTigranyan" target="_blank" rel="noopener noreferrer">YouTube ↗</a></div>
       </div>
       <div class="container footer-bottom"><span>© @DateTime.UtcNow.Year Garib Tigranyan. All rights reserved.</span><span>Built with .NET &amp; Statiq Web</span></div>
