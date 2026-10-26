@@ -89,6 +89,11 @@ jobs:
             "src/output/blog/index.html"
             "src/output/projects/index.html"
             "src/output/assets/css/site.css"
+            "src/output/assets/devtalks-logo.svg"
+            "src/output/assets/devtalks-logo.png"
+            "src/output/assets/favicon.svg"
+            "src/output/assets/favicon.ico"
+            "src/output/assets/apple-touch-icon.png"
           )
 
           for file in "${required_files[@]}"; do
