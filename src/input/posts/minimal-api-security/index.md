@@ -22,13 +22,18 @@ A valid token is only the beginning. A production API also needs to reject inval
 This guide follows one **ASP.NET Core Minimal API in .NET 10** through five practical layers. Each layer answers a different question. Together, they give us a useful starting boundary, not a complete security audit.
 
 <figure>
-  <img src="/assets/images/minimal-api-security/thumbnail.webp" alt="Garib Tigranyan presenting five security layers for a .NET Minimal API" width="1920" height="1080" style="display:block;max-width:100%;height:auto;border-radius:12px" decoding="async" />
+  <a href="https://www.youtube.com/watch?v=9cIkJKGeTgQ" target="_blank" rel="noopener noreferrer" aria-label="Watch Garib's Minimal API security video on YouTube">
+    <img src="/assets/images/minimal-api-security/thumbnail.webp" alt="Garib Tigranyan presenting five security layers for a .NET Minimal API" width="1920" height="1080" style="display:block;max-width:100%;height:auto;border-radius:12px" decoding="async" />
+  </a>
   <figcaption>Protect the route, validate the request, limit traffic, scope the data, and configure browser access deliberately.</figcaption>
 </figure>
 
-**[Open the animated five-layer overview →](/assets/demos/minimal-api-security-layers.html)**
+<p style="display:flex;flex-wrap:wrap;gap:12px 24px;font-weight:700">
+  <a href="https://www.youtube.com/watch?v=9cIkJKGeTgQ" target="_blank" rel="noopener noreferrer">Watch the video on YouTube ↗</a>
+  <a href="/assets/demos/minimal-api-security-layers.html">Open the animated five-layer overview →</a>
+</p>
 
-The overview matches the companion video and runs locally in your browser. The article below supplies the implementation details behind those labels.
+Watch the full walkthrough on YouTube, or explore the animated overview in your browser. The article below supplies the implementation details behind those layers.
 
 ## What we are building
 
