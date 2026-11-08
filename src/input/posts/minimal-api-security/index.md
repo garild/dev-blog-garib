@@ -28,12 +28,11 @@ This guide follows one **ASP.NET Core Minimal API in .NET 10** through five prac
   <figcaption>Protect the route, validate the request, limit traffic, scope the data, and configure browser access deliberately.</figcaption>
 </figure>
 
-<p style="display:flex;flex-wrap:wrap;gap:12px 24px;font-weight:700">
+<p style="font-weight:700">
   <a href="https://www.youtube.com/watch?v=9cIkJKGeTgQ" target="_blank" rel="noopener noreferrer">Watch the video on YouTube ↗</a>
-  <a href="/assets/demos/minimal-api-security-layers.html">Open the animated five-layer overview →</a>
 </p>
 
-Watch the full walkthrough on YouTube, or explore the animated overview in your browser. The article below supplies the implementation details behind those layers.
+Watch the full walkthrough on YouTube by clicking the thumbnail above. The article below supplies the implementation details behind those layers.
 
 ## What we are building
 
